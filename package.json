@@ -1,0 +1,16 @@
+{
+  "name": "innago_performance_k6js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "k6 run load/loadTestWithExistingPO.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/k6": "^2.0.0"
+  }
+}
