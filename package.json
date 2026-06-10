@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "k6 run load/loadTestWithExistingPO.js",
-    "po:dashboard": "cd /Users/ankitagupta/Ankita_Automation/Innago_Performance_k6JS/Innago_Performance_k6JS && k6 run load/loadTestWithExistingPO.js"
+    "test": "cd /Users/ankitagupta/Ankita_Automation/Innago_Performance_k6JS/Innago_Performance_k6JS && rm -rf reports/* && k6 run load/loadTestWithExistingPO.js",
+    "po:dashboard": "cd /Users/ankitagupta/Ankita_Automation/Innago_Performance_k6JS/Innago_Performance_k6JS && rm -rf reports/* && k6 run load/loadTestWithExistingPO.js",
+    "po:properties": "cd /Users/ankitagupta/Ankita_Automation/Innago_Performance_k6JS/Innago_Performance_k6JS && rm -rf reports/* && k6 run load/loadTestWithExistingPO.js"
   },
   "keywords": [],
   "author": "",

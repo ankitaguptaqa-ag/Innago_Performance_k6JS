@@ -256,8 +256,126 @@ class poPropertiesApiEndPoints {
                 },
             },
         },
-
-        test: {},
+        propertyDetails: {
+            getUnitDetail_lease_get: {
+                    url: (unitId) => {
+                        return `/api/property/UnitDetail/lease?unitId=${unitId}`;
+                    },
+                    name: 'property_details_getUnitDetailLease',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getUnitDetail_pendingLease_get: {
+                    url: (unitId) => {
+                        return `/api/property/UnitDetail/pending-lease?unitId=${unitId}`;
+                    },
+                    name: 'property_details_getUnitDetailPendingLease',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getUnitDetail_summary_get: {
+                    url: (unitId) => {
+                        return `/api/property/UnitDetail/summary?unitId=${unitId}`;
+                    },
+                    name: 'property_details_getUnitDetailSummary',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getMaintenanceDetailBasedOnPropertyIdAndUnitId_get: {
+                    url: (propertyId, unitId) => {
+                        return `/maintenancems/v1/property/${propertyId}/unit/${unitId}/maintenance/details`;
+                    },
+                    name: 'property_details_getMaintenanceDetail',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getUnitDetail_unitList_get: {
+                    url: (propertyId) => {
+                        return `/api/property/unitDetail/unit-list?propertyId=${propertyId}`;
+                    },
+                    name: 'property_details_getUnitDetailUnitList',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getRentCollected_get: {
+                    url: (leaseGuid) => {
+                        return `/income/lease/${leaseGuid}/rent-collected`;
+                    },
+                    name: 'property_details_getRentCollected',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getOverdueAmount_get: {
+                    url: (leaseGuid) => {
+                        return `/income/lease/${leaseGuid}/overdue-amount`;
+                    },
+                    name: 'property_details_getOverdueAmount',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                propertyunitStatics_post: {
+                    url: '/income/lease/propertyunit-statics',
+                    name: 'property_details_propertyUnitStatics',
+                    status: 200,
+                    methodType: 'POST',
+                },
+                getUnitDetail_tenantList_get: {
+                    url: (leaseId) => {
+                        return `/api/property/UnitDetail/tenant-list?leaseId=${leaseId}`;
+                    },
+                    name: 'property_details_getUnitDetailTenantList',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getMakeSuggestions: {
+                    url: '/api/TenantAdditionalInfo/VehicleInformation/GetMakeSuggestions',
+                    name: 'property_details_getMakeSuggestions',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getDamageReportStatus_get: {
+                    url: (leaseGuid) => {
+                        return `/lease/v1/damagereport/status?leaseId=${leaseGuid}`;
+                    },
+                    name: 'property_details_getDamageReportStatus',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getInvoiceDetail_get: {
+                    url: (propertyId, leaseGuid) => {
+                        return `/income/property/${propertyId}/invoices/${leaseGuid}`;
+                    },
+                    name: 'property_details_getInvoiceDetail',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                getUnitTenantListByLeaseId_get: {
+                    url: (leaseGuid) => {
+                        return `/api/property/unitDetail/${leaseGuid}/tenant-list`;
+                    },
+                    name: 'property_details_getUnitTenantListByLeaseId',
+                    status: 200,
+                    methodType: 'GET',
+                },
+                queueForPropertyDeleteById: {
+                    url: '/api/Property/PropertyDelete/QueueForPropertyDeleteById',
+                    name: 'property_details_queueForPropertyDeleteById',
+                    status: 200,
+                    methodType: 'POST',
+                },
+                archiveProperty_post: {
+                    url: '/api/Property/PropertyArchive/QueueForPropertyArchive',
+                    name: 'property_details_archiveProperty',
+                    status: 200,
+                    methodType: 'POST',
+                },
+                confirmDeleteOrArchive: {
+                    url: '/api/property/DeleteAndArchiveConfirmation/GetDeleteAndArchiveConfirmationDataModel',
+                    name: 'property_details_confirmDeleteOrArchive',
+                    status: 200,
+                    methodType: 'GET',
+                },
+        },
     };
 }
 

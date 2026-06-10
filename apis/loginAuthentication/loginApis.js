@@ -163,6 +163,9 @@ class LoginApis {
         // if (ENV !== 'dev' || ENV !== 'qa') {
         //  this.optOutOf2fa();
         // }
+        if (userInternalDataResponse.status !== 200) {
+            throw new Error(`userLoginIdentity failed with status ${userInternalDataResponse.status} - server may be temporarily unavailable`);
+        }
         let userInternalData = JSON.parse(userInternalDataResponse.body).Data;
 
 

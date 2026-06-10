@@ -1,5 +1,6 @@
 import { Trend } from "k6/metrics";
 import apiEndpoints from "../config/apiEndPoints.js";
+import poPropertiesApiEndPoints from "../apis/po/poProperties/poPropertiesApiEndPoints.js";
 
 
 function extractApiNames(obj) {
@@ -28,7 +29,10 @@ function extractApiNames(obj) {
 
 
 const getAllApiNames = () => {
-    const allNames = extractApiNames(apiEndpoints);
+    const allNames = [
+        ...extractApiNames(apiEndpoints),
+        ...extractApiNames(poPropertiesApiEndPoints),
+    ];
     return [...new Set(allNames)];
 };
 
