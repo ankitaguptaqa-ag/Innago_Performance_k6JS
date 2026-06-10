@@ -1,7 +1,6 @@
-import poPropertiesApis from "./poProperties_v2_apis.js";
+import poPropertiesApis from "./poProperties_apis.js";
 import { sleep } from "k6";
-import randomUtils from "../../utils/randomUtils.js";
-import { get } from "k6/http";
+import randomUtils from "../../../utils/randomUtils.js";
 
 
 
@@ -84,7 +83,7 @@ class poPropertiesApiGroup {
         //console.log("New Property created with ID:", newPropertyDetails.propertyId);
         let bankDetailsJsonArray = poPropertiesApis.getBankAccountListForPropertyDetails();
         let propertySettingJsonModel = poPropertiesApis.getPropertySettingModel(newPropertyDetails.PropertyId);
-        poPropertiesApis.savePropertyBankSettings(propertySettingJsonModel.Data);
+        poPropertiesApis.savePropertyBankSettings(JSON.stringify(propertySettingJsonModel.Data));
         poPropertiesApis.getAllPropertyUnitList();
         poPropertiesApis.getAllPropertyInfo();
         poPropertiesApis.getPropertyShortViewModelForSummary(newPropertyDetails.PropertyId);
@@ -111,7 +110,7 @@ class poPropertiesApiGroup {
 
         let tenantDetailJson = poPropertiesApis.addTenant(addTenantJsonModelResponse.Data, dummyPoData.nameDataArray, propertyObject);
         let renterInsuranceRequestJsonModelResponse = poPropertiesApis.getRenterInsuranceViewModel(tenantDetailJson.rentalRequestId);
-        poPropertiesApis.saveRenterInsuranceForLease(renterInsuranceRequestJsonModelResponse.Data);
+        poPropertiesApis.saveRenterInsuranceForLease(JSON.stringify(renterInsuranceRequestJsonModelResponse.Data));
         let finalLeaseJsonModelResponse = poPropertiesApis.getLeaseToIssue(tenantDetailJson.rentalRequestId);
 
 
@@ -143,6 +142,28 @@ class poPropertiesApiGroup {
 
 
     };
+
+    propertyDetailSectionDefaultApis_group = (propertyObject) => {
+        poPropertiesApis.data = this.data;
+        poPropertiesApis.trends = this.trends;
+        console.log(`[Property Details] Starting detail APIs for propertyId: ${propertyObject.propertyId}, unitId: ${propertyObject.propertyUnitId}, leaseGuid: ${propertyObject.leaseGuid}`);
+        poPropertiesApis.getUnitDetailLease(propertyObject.propertyUnitId);
+        poPropertiesApis.getUnitDetailPendingLease(propertyObject.propertyUnitId);
+        poPropertiesApis.getUnitDetailSummary(propertyObject.propertyUnitId);
+        poPropertiesApis.getMaintenanceDetailBasedOnPropertyIdAndUnitId(propertyObject);
+        poPropertiesApis.getUnitDetailUnitList(propertyObject.propertyId);
+        poPropertiesApis.getRentCollected(propertyObject.leaseGuid);
+        poPropertiesApis.getOverdueAmount(propertyObject.leaseGuid);
+        poPropertiesApis.getPropertyUnitStatics(propertyObject);
+        poPropertiesApis.getUnitDetailTenantList(propertyObject.leaseId);
+        poPropertiesApis.getMakeSuggestions();
+        poPropertiesApis.getDamageReportStatus(propertyObject.leaseGuid);
+        poPropertiesApis.getInvoiceDetail(propertyObject);
+        poPropertiesApis.getUnitTenantListByLeaseId(propertyObject.leaseGuid);
+        console.log(`[Property Details] All detail APIs completed successfully`);
+    };
+
+
 
 
 

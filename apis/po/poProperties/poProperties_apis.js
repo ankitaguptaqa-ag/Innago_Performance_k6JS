@@ -5,6 +5,7 @@ import { addResponseTimeToTrend } from "../../../utils/customTrends.js";
 import HttpsMethods from '../../../utils/httpsMethods.js';
 import poPropertiesApiEndPoints from "./poPropertiesApiEndPoints.js";
 import poPropertiesRequestPayload from "../../../requestPayloads/poPropertiesRequestPayload.js";
+import dateUtils from "../../../utils/dateUtils.js";
 
 
 class poPropertiesApis {
@@ -78,6 +79,25 @@ class poPropertiesApis {
         const response = HttpsMethods.post(url, payload, headers, tags);
         return this._handleResponse(response, apiEndPoint, operationName);
     }
+
+    /**
+     * Makes a standardized GET request with custom URL (for query parameters)
+     * @private
+     * @param {Object} apiEndPoint - API endpoint configuration
+     * @param {string} customUrl - Custom URL with query parameters
+     * @param {string} operationName - Description of the operation
+     * @returns {Object} Parsed JSON response
+     */
+    _makeGetRequestWithUrl(apiEndPoint, customUrl, operationName) {
+        const headers = this._createHeaders();
+        const tags = this._createTags(apiEndPoint);
+        const response = HttpsMethods.get(customUrl, headers, tags);
+        return this._handleResponse(response, apiEndPoint, operationName);
+    }
+
+
+
+
 
 
 
@@ -458,6 +478,136 @@ class poPropertiesApis {
 
 
 
+
+
+
+    //property details endpoints
+    getUnitDetailLease(unitId) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getUnitDetail_lease_get;
+        const url = `${BASE_URL}${apiEndPoint.url(unitId)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Unit Detail Lease');
+    }
+
+
+    getUnitDetailPendingLease(unitId) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getUnitDetail_pendingLease_get;
+        const url = `${BASE_URL}${apiEndPoint.url(unitId)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Unit Detail Pending Lease');
+    }
+
+
+    getUnitDetailSummary(unitId) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getUnitDetail_summary_get;
+        const url = `${BASE_URL}${apiEndPoint.url(unitId)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Unit Detail Summary');
+    }
+
+
+    getMaintenanceDetailBasedOnPropertyIdAndUnitId(propertyObject) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getMaintenanceDetailBasedOnPropertyIdAndUnitId_get;
+        const url = `${BASE_URL}${apiEndPoint.url(propertyObject.propertyId, propertyObject.propertyUnitId)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Maintenance Detail Based On Property Id And Unit Id');
+    }
+
+
+    getUnitDetailUnitList(propertyId) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getUnitDetail_unitList_get;
+        const url = `${BASE_URL}${apiEndPoint.url(propertyId)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Unit Detail Unit List');
+    }
+
+
+    getRentCollected(leaseGuid) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getRentCollected_get;
+        const url = `${BASE_URL}${apiEndPoint.url(leaseGuid)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Rent Collected');
+    }
+
+
+    getOverdueAmount(leaseGuid) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getOverdueAmount_get;
+        const url = `${BASE_URL}${apiEndPoint.url(leaseGuid)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Overdue Amount');
+    }
+
+
+    getPropertyUnitStatics(propertyObject) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.propertyunitStatics_post;
+        let payload = {
+            LeaseUid: propertyObject.leaseGuid,
+            DateFrom: dateUtils.getFirstDateOfCurrentMonth_yyyy_mm_dd(),
+            DateTo: dateUtils.getLastDateOfCurrentMonth_yyyy_mm_dd(),
+        };
+        const url = `${BASE_URL}${apiEndPoint.url}`;
+        return this._makePostRequest(url, JSON.stringify(payload), apiEndPoint, 'Get Property Unit Statics');
+    }
+
+
+    getUnitDetailTenantList(leaseId) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getUnitDetail_tenantList_get;
+        const url = `${BASE_URL}${apiEndPoint.url(leaseId)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Unit Detail Tenant List');
+    }
+
+
+    getMakeSuggestions() {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getMakeSuggestions;
+        const url = `${BASE_URL}${apiEndPoint.url}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Make Suggestions');
+    }
+
+
+    getDamageReportStatus(leaseGuid) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getDamageReportStatus_get;
+        const url = `${BASE_URL}${apiEndPoint.url(leaseGuid)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Damage Report Status');
+    }
+
+
+    getInvoiceDetail(propertyObject) {
+        const endPoint = poPropertiesApiEndPoints.po.propertyDetails.getInvoiceDetail_get;
+        const url = `${BASE_URL}${endPoint.url(propertyObject.propertyId, propertyObject.leaseGuid)}`;
+        return this._makeGetRequestWithUrl(endPoint, url, 'Get Invoice Detail');
+    }
+
+
+    getUnitTenantListByLeaseId(leaseGuid) {
+        const apiEndPoint = poPropertiesApiEndPoints.po.propertyDetails.getUnitTenantListByLeaseId_get;
+        const url = `${BASE_URL}${apiEndPoint.url(leaseGuid)}`;
+        return this._makeGetRequestWithUrl(apiEndPoint, url, 'Get Unit Tenant List By Lease Id');
+    }
+
+
+    deleteProperty(propertyId) {
+        const endPoint = poPropertiesApiEndPoints.po.propertyDetails.queueForPropertyDeleteById;
+        const headers = this._createHeaders();
+        const tags = this._createTags(endPoint);
+        const response = HttpsMethods.post(`${BASE_URL}${endPoint.url}?propertyId=${propertyId}`, JSON.stringify({}), headers, tags);
+        if (response.status !== endPoint.status) {
+            console.log(`Failed to delete property: ${response.status} --> ${response.body}`);
+        }
+        check(response, {
+            'Delete Property api status is 200': (r) => r.status === 200,
+            'Delete Property api response body is not empty': (r) => r.body && r.body.length > 0,
+        });
+        addResponseTimeToTrend(this.trends, endPoint.name, response);
+        expect(response).to.have.validJsonBody();
+        return JSON.parse(response.body);
+    }
+
+
+    archiveProperty(payload) {
+        const endPoint = poPropertiesApiEndPoints.po.propertyDetails.archiveProperty_post;
+        const url = `${BASE_URL}${endPoint.url}`;
+        return this._makePostRequest(url, payload, endPoint, 'Archive Property');
+    }
+
+
+    confirmDeleteOrArchive(propertyId, propertyUnitId = 0, listingUid = null) {
+        const endPoint = poPropertiesApiEndPoints.po.propertyDetails.confirmDeleteOrArchive;
+        const url = `${BASE_URL}${endPoint.url}?propertyId=${propertyId}&propertyUnitId=${propertyUnitId}&listingUid=${listingUid}`;
+        return this._makeGetRequestWithUrl(endPoint, url, 'Confirm Delete Or Archive');
+    }
 
 
 
