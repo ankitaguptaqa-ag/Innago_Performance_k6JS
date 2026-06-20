@@ -2,6 +2,14 @@ class poPropertiesApiEndPoints {
     po = {
         properties: {
             propertyListing: {
+
+                printLeaseList: {
+                    url: '/api/Property/LeaseList/PrintLeaseList',
+                    name: 'property_listing_printLeaseList',
+                    status: 200,
+                    methodType: 'POST',
+                },
+
                 getPropertyLimit_get: {
                     url: '/api/Property/PropertyValidation/GetPropertyLimit',
                     name: 'property_listing_getPropertyLimit',
@@ -250,6 +258,12 @@ class poPropertiesApiEndPoints {
                     issueLease_post: {
                         url: '/api/Property/Lease/IssueLease',
                         name: 'property_create_issueLease',
+                        status: 200,
+                        methodType: 'POST',
+                    },
+                    tempSaveFile_post: {
+                        url: '/public/File/Upload/TempSaveFile',
+                        name: 'property_create_tempSaveFile',
                         status: 200,
                         methodType: 'POST',
                     },

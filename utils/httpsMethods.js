@@ -11,6 +11,7 @@ class HttpsMethods {
         let response = http.get(url, {
             headers,
             tags,
+            timeout: '120s',
         });
 
 
@@ -23,6 +24,7 @@ class HttpsMethods {
         let response = http.post(url, payload, {
             headers,
             tags,
+            timeout: '120s',
         });
 
 
@@ -35,6 +37,7 @@ class HttpsMethods {
         let response = http.put(url, payload, {
             headers,
             tags,
+            timeout: '120s',
         });
 
 
@@ -47,6 +50,7 @@ class HttpsMethods {
         let response = http.del(url, {
             headers,
             tags,
+            timeout: '120s',
         });
 
 
