@@ -207,7 +207,7 @@ class poLeaseAndFilesApis {
         const url = `${BASE_URL}${apiEndPoint.url}`;
         console.log(`[tempSaveFile] Uploading file to ${url}`);
         const formData = {
-            file: fileContent,
+            file: http.file(fileContent, 'lease-document.png', 'image/png'),
         };
         const headers = this._createFileUploadHeaders();
         const tags = this._createTags(apiEndPoint);

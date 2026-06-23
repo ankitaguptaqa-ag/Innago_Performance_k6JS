@@ -71,6 +71,26 @@ class randomUtils {
         const num = Math.floor(Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1));
         return num.toString();
     }
+
+    // Random string of alphabets (a-z) with no spaces
+    randomAlphabetsWithoutSpace(length) {
+        const alphabets = "abcdefghijklmnopqrstuvwxyz";
+        let randomString = "";
+        for (let i = 0; i < length; i++) {
+            randomString += alphabets.charAt(Math.floor(Math.random() * alphabets.length));
+        }
+        return randomString;
+    }
+
+    // Random string of alphabets (a-z) that may include spaces between characters
+    randomAlphabetsWithSpace(length) {
+        const characters = "abcdefghijklmnopqrstuvwxyz ";
+        let randomString = "";
+        for (let i = 0; i < length; i++) {
+            randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return randomString.trim();
+    }
 }
 
 

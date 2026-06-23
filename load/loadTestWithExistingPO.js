@@ -10,6 +10,7 @@ import propertiesDataObjects from "../testData/dataObjects/propertiesDataObjects
 import mockDataGenerator from "../userData/mockDataGenerator.js";
 import { createCustomTrends } from "../utils/customTrends.js";
 import poLeaseAndFilesGroups from "../apis/po/poLease&Files/poLease&Files_groups.js";
+import poIncomeGroups from "../apis/po/poincome/poIncome_groups.js";
 import { getRandomPngFile } from "../utils/fileSelector.js";
 
 
@@ -73,10 +74,11 @@ export function handleSummary(data) {
 
 
 export function setup() {
+    // NOTE: binary file content must NOT be passed through setup() — k6 JSON-serializes
+    // setup data, which corrupts raw bytes. Use the module-level open() values directly.
     return {
         propertyDataArray: mockDataGenerator.getMockPropertyData(),
         nameDataArray: mockDataGenerator.getMockNameDataArray(),
-        fileContent: selectedFileContent,
     };
 }
 
@@ -115,7 +117,7 @@ export default function (dummyPoData) {
     group("PO Create Property & Details APIs", () => {
         poPropertiesGroups.data = userData;
         poPropertiesGroups.trends = customTrends;
-        propertyObject = poPropertiesGroups.createNewPropertyWithM2MLease_v2_group(propertiesDataObjects.blankProperty(), dummyPoData, dummyPoData.fileContent);
+        propertyObject = poPropertiesGroups.createNewPropertyWithM2MLease_v2_group(propertiesDataObjects.blankProperty(), dummyPoData, selectedFileContent);
         propertyId = propertyObject.propertyId;
         console.log(`[Load Test] Property created: ${propertyObject.propertyName}, Id: ${propertyId}`);
         poPropertiesGroups.propertyDetailSectionDefaultApis_group(propertyObject);
@@ -127,16 +129,21 @@ export default function (dummyPoData) {
         poLeaseAndFilesGroups.data = userData;
         poLeaseAndFilesGroups.trends = customTrends;
         poLeaseAndFilesGroups.leaseAndFilesDefaultApisGroup();
-        poLeaseAndFilesGroups.getLeaseDetailsGroup(dummyPoData.fileContent);
+        poLeaseAndFilesGroups.getLeaseDetailsGroup(selectedFileContent);
         poLeaseAndFilesGroups.uploadLeaseDocuments(pngFile_2);
         poLeaseAndFilesGroups.leasesExportApiGroup();
-
-
-
 
     });
 
     sleep(5);
+
+    group('PO Income APIs', () => {
+        poIncomeGroups.data = userData;
+        poIncomeGroups.trends = customTrends;
+        poIncomeGroups.incomeDefaultApisGroup();
+        let firstNewCustomInvoiceDetails = poIncomeGroups.createNewCustomRandomInvoiceGroup(propertyId, 0);
+        console.log(`[Load Test] Invoice created: ${firstNewCustomInvoiceDetails.invoiceTypeName}, Amount: ${firstNewCustomInvoiceDetails.amount}`);
+    });
 }
 
 
