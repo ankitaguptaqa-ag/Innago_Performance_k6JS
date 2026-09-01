@@ -144,6 +144,8 @@ export default function (dummyPoData) {
         let firstNewCustomInvoiceDetails = poIncomeGroups.createNewCustomRandomInvoiceGroup(propertyId, 0);
         console.log(`[Load Test] Invoice created: ${firstNewCustomInvoiceDetails.invoiceTypeName}, Amount: ${firstNewCustomInvoiceDetails.amount}`);
     });
+
+    
 }
 
 
